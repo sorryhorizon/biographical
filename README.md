@@ -9,6 +9,14 @@
 ### Project Overview
 This project is a personal academic homepage for **Jian Zheng**, a Master's student at UESTC. It is designed with a clean, academic layout suitable for showcasing research interests, education, projects, and skills.
 
+### Key Updates (2026-02-12)
+- **Project Classification**: Categorized open-source contributions (NVIDIA, LatticeUrbanWind) into a dedicated "Open Source Contributions" section.
+- **Content Enhancement**: Refined contribution descriptions to highlight technical impact (documentation integrity, data pipeline stability).
+- **Tone Adjustment**: Updated Chinese introduction to be more conversational and approachable.
+- **Skill Description**: Refined the Chinese skill description to be more humble and colloquial.
+- **English Intro**: Synced English introduction style to match the conversational, first-person, and humble tone of the Chinese version.
+- **Skills Update**: Added explicit "Languages" entry (Chinese/English) and renamed "Programming Languages" for clarity.
+
 ### Key Updates (2026-02-11)
 - **UI/UX Overhaul**: Implemented a modern card-based layout (`content-card`) for main content sections and optimized sidebar styling (240px width).
 - **Animation Integration**: Replaced static UESTC logo with a custom Remotion animation (`uestc_animation.mp4`) in the sidebar.
@@ -42,6 +50,9 @@ This project is a personal academic homepage for **Jian Zheng**, a Master's stud
 - **Personal Introduction**: Master's student at UESTC, research interests in Deep Learning/HPC.
 - **Education**: UESTC (Master's) and JXUST (Bachelor's).
 - **Projects**:
+  - **Open Source Contributions**:
+    - NVIDIA accelerated-computing-hub (Documentation Integrity)
+    - LatticeUrbanWind (Data Pipeline Stability)
   - PyTorch CUDA Extension based on Turbodiffusion (Master's Project)
   - Chat Data Statistical Analysis (Hadoop/Hive)
   - Book Recommendation System (Collaborative Filtering)
