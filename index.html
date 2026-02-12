@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>简政 - 个人主页 | Jian Zheng - Homepage</title>
+    <!-- 引入 FontAwesome 图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 全局样式 / Global Styles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background: #f4f6f9; /* 浅灰色背景，增加层次感 */
+        }
+
+        a {
+            color: #0066cc;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        a:hover {
+            text-decoration: underline;
+            color: #004499;
+        }
+
+        /* 顶部导航栏 / Top Navigation Bar */
+        .navbar {
+            background-color: #fff;
+            padding: 0;
+            border-bottom: 1px solid #e1e4e8;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05); /* 增加导航栏阴影 */
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+            height: 60px; /* 固定高度 */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            height: 100%;
+            align-items: center;
+        }
+        
+        /* ... scrollbar styles ... */
+        .nav-links::-webkit-scrollbar { 
+            display: none; 
+        }
+
+        .nav-item {
+            color: #555;
+            font-size: 15px;
+            font-weight: 500;
+            white-space: nowrap;
+            padding: 0 5px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            border-bottom: 3px solid transparent; /* 预留边框位置 */
+            transition: all 0.2s;
+        }
+
+        .nav-item.active {
+            color: #0066cc;
+            border-bottom: 3px solid #0066cc;
+            font-weight: 600;
+        }
+
+        .nav-item:hover {
+            color: #0066cc;
+        }
+
+        /* 主容器 / Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            display: flex;
+            padding: 0 40px;
+            gap: 40px;
+            align-items: flex-start; /* 顶部对齐 */
+        }
+
+        /* 侧边栏样式 / Sidebar Styles */
+        .sidebar {
+            width: 240px; /* 调整宽度仿 fluids.ac */
+            flex-shrink: 0;
+            text-align: center;
+            background: #fff;
+            padding: 20px; /* 减小内边距 */
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 90px;
+            max-height: calc(100vh - 120px);
+            overflow-y: auto;
+            scrollbar-width: none;
+        }
+        
+        .sidebar::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* 头像样式 / Avatar Styles */
+        .avatar-container {
+            width: 140px; /* 缩小头像 */
+            height: 140px;
+            margin: 0 auto 15px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: #f0f0f0;
+            border: 4px solid #fff;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        /* ... avatar placeholder ... */
+        
+        .avatar-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* 学校Logo样式 / School Logo Styles */
+        .school-logo-container {
+            margin: 10px 0;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .school-logo {
+            width: 200px; /* 缩小 Logo */
+            height: 200px;
+            object-fit: cover;
+            border-radius: 12px;
+            background: transparent;
+        }
+
+        .sidebar h1 {
+            font-size: 22px;
+            margin: 0 0 5px 0; /* 减小标题下间距 */
+            color: #2c3e50;
+            font-weight: 700;
+        }
+
+        .sidebar .affiliation {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 15px; /* 减小间距 */
+            line-height: 1.5;
+        }
+
+        .sidebar .interests {
+            font-size: 13px;
+            color: #777;
+            line-height: 1.6;
+            margin-bottom: 15px; /* 减小间距 */
+            padding-top: 15px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .contact-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            font-size: 14px;
+            color: #555;
+            align-items: flex-start; /* 左对齐列表 */
+            padding-left: 10px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+        }
+        
+        .contact-item a {
+             color: #555;
+             transition: color 0.2s;
+        }
+        
+        .contact-item a:hover {
+            color: #0066cc;
+        }
+
+        .contact-item i {
+            width: 20px;
+            text-align: center;
+            color: #4a90e2;
+        }
+
+        /* 主内容区域样式 / Main Content Styles */
+        .main {
+            flex-grow: 1;
+            /* 移除 padding-top，由卡片 margin 控制 */
+        }
+        
+        /* 通用卡片样式 */
+        .content-card {
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            margin-bottom: 30px;
+        }
+
+        .intro p {
+            margin-bottom: 15px;
+            font-size: 16px;
+            text-align: justify;
+            color: #444;
+            line-height: 1.8;
+        }
+
+        /* 章节标题样式 / Section Title Styles */
+        h2 {
+            font-size: 20px;
+            color: #2c3e50;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 12px;
+            margin-top: 0; /* 卡片顶部 */
+            margin-bottom: 25px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2 i {
+            color: #4a90e2; /* 蓝色图标 */
+            font-size: 20px;
+        }
+
+        /* 项目列表样式 / List Items Styles */
+        .section-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* 第一层列表项 (项目标题) */
+        .section-list > li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 25px; /* 减小项目间距 */
+            font-size: 15px;
+            color: #333;
+        }
+
+        /* 第一层列表项的蓝色大圆点 */
+        .section-list > li::before {
+            content: "•";
+            color: #4a90e2;
+            font-weight: bold;
+            font-size: 20px;
+            position: absolute;
+            left: 0;
+            top: -4px;
+        }
+
+        /* 内部列表 (项目细节) */
+        .section-list li ul {
+            list-style: none; /* 移除默认圆点 */
+            padding-left: 0;
+            margin-top: 8px;
+        }
+
+        /* 内部列表项 */
+        .section-list li ul li {
+            position: relative;
+            padding-left: 15px; /* 减小内缩进 */
+            margin-bottom: 6px; /* 减小行间距 */
+            font-size: 14px;
+            color: #555;
+            line-height: 1.5; /* 稍微紧凑的行高 */
+        }
+
+        /* 内部列表项的小圆点 */
+        .section-list li ul li::before {
+            content: "•";
+            color: #4a90e2; /* 保持蓝色主题 */
+            font-size: 14px; /* 较小的圆点 */
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-weight: normal;
+        }
+
+        .date-range {
+            font-style: italic;
+            color: #666;
+            margin-right: 5px;
+        }
+
+        .degree-title {
+            font-weight: bold;
+            color: #000;
+        }
+
+        .institution {
+            font-weight: bold;
+        }
+
+        /* 标签样式 / Tag Styles */
+        .tag {
+            display: inline-block;
+            background: #f5f5f5;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #666;
+            margin-left: 5px;
+        }
+
+        /* 响应式设计 / Responsive Design */
+        @media (max-width: 900px) {
+            .container {
+                flex-direction: column;
+                padding: 0 20px;
+                gap: 40px;
+            }
+            .sidebar {
+                width: 100%;
+                text-align: center;
+                position: static; /* 移动端取消 sticky */
+                max-height: none; /* 移动端取消高度限制 */
+                overflow-y: visible;
+            }
+            .contact-item {
+                justify-content: center; /* 移动端联系方式内容居中 */
+            }
+            .avatar-container {
+                margin: 0 auto 20px;
+            }
+            .contact-list {
+                align-items: center;
+            }
+            .nav-container {
+                padding: 0 20px;
+            }
+        }
+
+        /* 语言切换样式 / Language Switcher Styles */
+        .lang-switch {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: 20px;
+        }
+
+        .lang-btn {
+            background: none;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 4px 10px;
+            font-size: 13px;
+            cursor: pointer;
+            color: #666;
+            transition: all 0.2s;
+        }
+
+        .lang-btn:hover {
+            border-color: #0066cc;
+            color: #0066cc;
+        }
+
+        .lang-btn.active {
+            background-color: #0066cc;
+            color: #fff;
+            border-color: #0066cc;
+        }
+
+        /* 语言显示控制 / Language Display Control */
+        /* 默认显示英文，隐藏中文 */
+        .lang-zh {
+            display: none;
+        }
+        
+        /* 当 body 有 zh 类时，显示中文，隐藏英文 */
+        body.zh .lang-en {
+            display: none;
+        }
+        body.zh .lang-zh {
+            display: block; /* 或者 inline-block/flex 等，具体看上下文，通常 block 够用，如果是行内元素需要注意 */
+        }
+        /* 针对特定标签的修正 */
+        span.lang-zh { display: none; }
+        body.zh span.lang-zh { display: inline; }
+        body.zh span.lang-en { display: none; }
+
+        /* 锚点定位偏移，防止被导航栏遮挡 */
+        [id] {
+            scroll-margin-top: 80px;
+        }
+    </style>
+</head>
+<body class="en" id="homepage">
+
+    <!-- 顶部导航栏 / Top Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-links">
+                <a href="#homepage" class="nav-item active">
+                    <span class="lang-en">Homepage</span>
+                    <span class="lang-zh">个人主页</span>
+                </a>
+                <a href="#educations" class="nav-item">
+                    <span class="lang-en">Educations</span>
+                    <span class="lang-zh">教育背景</span>
+                </a>
+                <a href="#experiences" class="nav-item">
+                    <span class="lang-en">Experiences</span>
+                    <span class="lang-zh">项目经历</span>
+                </a>
+                <!-- Publications and Conferences removed -->
+                <a href="#" class="nav-item">
+                    <span class="lang-en">Academic Services</span>
+                    <span class="lang-zh">学术服务</span>
+                </a>
+                <a href="#honors" class="nav-item">
+                    <span class="lang-en">Honors and Awards</span>
+                    <span class="lang-zh">荣誉奖项</span>
+                </a>
+            </div>
+            
+            <!-- 语言切换器 -->
+            <div class="lang-switch">
+                <button class="lang-btn active" onclick="setLanguage('en')">En</button>
+                <button class="lang-btn" onclick="setLanguage('zh')">中</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- 左侧边栏 / Left Sidebar -->
+        <div class="sidebar">
+            <!-- 头像 / Avatar -->
+            <div class="avatar-container">
+                <div class="avatar-placeholder">
+                    <span class="lang-en" style="font-size: 80px;">J</span>
+                    <span class="lang-zh" style="font-size: 80px;">简</span>
+                </div>
+            </div>
+            
+            <h1>
+                <span class="lang-en">Jian Zheng</span>
+                <span class="lang-zh">简政</span>
+                <br>
+                <span class="lang-en" style="font-size: 18px; font-weight: normal; color: #555;">Master Student</span>
+                <span class="lang-zh" style="font-size: 18px; font-weight: normal; color: #555;">硕士研究生</span>
+            </h1>
+            
+            <div class="affiliation">
+                <span class="lang-en">UESTC, Software Engineering</span>
+                <span class="lang-zh">电子科技大学，软件工程</span>
+            </div>
+            
+            <div class="interests">
+                <span class="lang-en">
+                    Deep Learning / LLM,<br>
+                    HPC / Parallel Computing,<br>
+                    Big Data Analysis,<br>
+                    Recommendation Systems.
+                </span>
+                <span class="lang-zh">
+                    深度学习 / LLM，<br>
+                    HPC / 并行计算，<br>
+                    大数据分析，<br>
+                    推荐系统。
+                </span>
+            </div>
+            
+            <div class="contact-list">
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span class="lang-en">Shenzhen, China</span>
+                    <span class="lang-zh">中国 深圳</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <a href="mailto:1219699501@qq.com">1219699501@qq.com</a>
+                </div>
+                <div class="contact-item">
+                    <i class="fab fa-github"></i>
+                    <a href="https://github.com/sorryhorizon" target="_blank">GitHub</a>
+                </div>
+                <div class="contact-item">
+                    <i class="fab fa-researchgate"></i>
+                    <a href="#">ResearchGate</a>
+                </div>
+                <div class="contact-item">
+                    <i class="fab fa-linkedin"></i>
+                    <a href="#">LinkedIn</a>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-graduation-cap"></i>
+                    <a href="#">Google Scholar</a>
+                </div>
+                <div class="contact-item">
+                    <i class="fab fa-orcid"></i>
+                    <a href="#">ORCID</a>
+                </div>
+            </div>
+            
+            <!-- School Logo -->
+            <div class="school-logo-container">
+                <video src="images/uestc_animation.mp4" class="school-logo" autoplay loop muted playsinline></video>
+            </div>
+        </div>
+
+        <!-- 右侧主要内容 / Main Content -->
+        <div class="main">
+            <!-- 简介 / Introduction -->
+            <div class="intro content-card" id="about">
+                <div class="lang-en">
+                    <p>Jian Zheng is currently a Master's student majoring in <strong>Software Engineering</strong> at <strong>University of Electronic Science and Technology of China (UESTC)</strong> (2025 - Present). He received his Bachelor's degree from Jiangxi University of Science and Technology (JXUST) in 2025.</p>
+                    
+                    <p>His current research interests include <strong>Deep Learning</strong>, <strong>Machine Learning</strong>, <strong>Large Language Models (LLM)</strong>, <strong>High-Performance Computing (HPC)</strong>, and <strong>Parallel Computing</strong>. He is proficient in programming languages such as C, C++, Python, and technologies like CUDA, Git, and Linux.</p>
+                </div>
+                <div class="lang-zh">
+                    <p>我目前是<strong>电子科技大学</strong>（UESTC）<strong>软件工程</strong>专业的在读硕士研究生（2025年至今）。我于2025年获得江西理工大学（JXUST）学士学位。</p>
+                    
+                    <p>我目前的研究方向包括<strong>深度学习</strong>、<strong>机器学习</strong>、<strong>大语言模型（LLM）</strong>、<strong>高性能计算（HPC）</strong>以及<strong>并行计算</strong>。我熟练掌握 C、C++、Python 等编程语言，以及 CUDA、Git、Linux 等开发技术。</p>
+                </div>
+            </div>
+
+            <!-- 教育背景 / Educations -->
+            <div class="content-card">
+                <h2 id="educations">
+                    📖 
+                    <span class="lang-en">Educations</span>
+                    <span class="lang-zh">教育背景</span>
+                    📖
+                </h2>
+                <ul class="section-list">
+                    <!-- Master's Degree -->
+                    <li>
+                        <div class="lang-en">
+                            <span class="date-range">2025.06 - Present,</span> 
+                            <span class="degree-title">M.Eng. Software Engineering</span>, 
+                            <span class="institution">University of Electronic Science and Technology of China (UESTC), Shenzhen Institute for Advanced Study</span>.
+                            <br>
+                            Supervisors: <a href="https://yjsjy.uestc.edu.cn/gmis/jcsjgl/dsfc/dsgrjj/20495?yxsh=28" target="_blank" style="color: #4a90e2; text-decoration: none;">Prof. Jun Yang</a> (Fellow of the Canadian Academy of Engineering) and <a href="https://yjsjy.uestc.edu.cn/gmis/jcsjgl/dsfc/dsgrjj/20589?yxsh=28" target="_blank" style="color: #4a90e2; text-decoration: none;">Prof. Qiuquan Guo</a>.
+                            <br>
+                            Lab: <a href="http://www.shensilab.com/" target="_blank" style="color: #4a90e2; text-decoration: none;">Shensi Lab</a> (AI Group & Low-Altitude Economy Group).
+                            <br>
+                            Research Directions: Python, CUDA, Deep Learning, Machine Learning, LLM, HPC, Parallel Computing.
+                        </div>
+                        <div class="lang-zh">
+                            <span class="date-range">2025.06 - 至今,</span> 
+                            <span class="degree-title">工程硕士 软件工程</span>, 
+                            <span class="institution">电子科技大学（深圳高等研究院）</span>.
+                            <br>
+                            导师：<a href="https://yjsjy.uestc.edu.cn/gmis/jcsjgl/dsfc/dsgrjj/20495?yxsh=28" target="_blank" style="color: #4a90e2; text-decoration: none;">杨军教授</a> (加拿大工程院院士) 与 <a href="https://yjsjy.uestc.edu.cn/gmis/jcsjgl/dsfc/dsgrjj/20589?yxsh=28" target="_blank" style="color: #4a90e2; text-decoration: none;">郭秋泉教授</a>。
+                            <br>
+                            实验室：<a href="http://www.shensilab.com/" target="_blank" style="color: #4a90e2; text-decoration: none;">深思实验室</a>（人工智能组与低空经济组）。
+                            <br>
+                            研究方向：Python、CUDA、深度学习、机器学习、LLM、HPC、并行计算。
+                        </div>
+                    </li>
+                    <!-- Bachelor's Degree -->
+                    <li>
+                        <div class="lang-en">
+                            <span class="date-range">2021.09 - 2025.06,</span> 
+                            <span class="degree-title">B.Eng. Software Engineering</span>, 
+                            <span class="institution" style="font-weight: normal;">Jiangxi University of Science and Technology</span>.
+                            <br>
+                            Research Directions: C++, Java, Big Data, Advanced Mathematics, Recommendation Systems, Software Engineering, Database.
+                        </div>
+                        <div class="lang-zh">
+                            <span class="date-range">2021.09 - 2025.06,</span> 
+                            <span class="degree-title">工学学士 软件工程</span>, 
+                            <span class="institution" style="font-weight: normal;">江西理工大学软件工程学院</span>.
+                            <br>
+                            学习方向：C++、Java、大数据、高等数学、推荐系统、软件工程、数据库。
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- 项目经历 / Experiences -->
+            <div class="content-card">
+                <h2 id="experiences">
+                    <i class="fas fa-desktop"></i> 
+                    <span class="lang-en">Experiences</span>
+                    <span class="lang-zh">项目经历</span>
+                </h2>
+                
+                <!-- Master's Projects -->
+                <h3 style="font-size: 18px; color: #444; border-left: 4px solid #4a90e2; padding-left: 10px; margin: 20px 0 15px 0;">
+                    <span class="lang-en">Master's Projects</span>
+                    <span class="lang-zh">硕士期间项目</span>
+                </h3>
+                <ul class="section-list">
+                    <!-- Master's Project -->
+                    <li>
+                        <div class="lang-en">
+                            <span class="degree-title">Development of PyTorch CUDA Extension based on Turbodiffusion</span>
+                            <p style="margin: 5px 0 5px 0; font-size: 14px; color: #444;">Designed and implemented a high-performance CUDA optimization scheme for the cutting-edge 3D generation model (Hunyuan3D-2mini), addressing inference latency and memory bottlenecks.</p>
+                            <ul class="detail-list">
+                                <li>Integrated <strong>Turbodiffusion</strong> framework, applied low-bit attention (SageAttention, INT8/INT4), sparse attention (SLA), and step distillation (rCM).</li>
+                                <li>Developed <strong>PyTorch C++/CUDA extensions</strong> with hand-written fused kernels (e.g., AdaLayerNorm) using shared memory to avoid global memory access.</li>
+                                <li>Integrated <strong>DeepGEMM</strong> for W8A8 quantized linear layers optimization.</li>
+                                <li>Built microservices with <strong>FastAPI</strong> using CUDA Streams and asynchronous batching to improve throughput.</li>
+                                <li><strong>Result:</strong> Reduced 3D generation latency to <strong>10-30s</strong> on RTX 4090, achieved <strong>1-2 req/s</strong> throughput, and reduced peak memory usage by <strong>30-50%</strong>.</li>
+                            </ul>
+                        </div>
+                        <div class="lang-zh">
+                            <span class="degree-title">基于Turbodiffusion的pytorch cuda扩展开发</span>
+                            <p style="margin: 5px 0 5px 0; font-size: 14px; color: #444;">针对前沿3D生成模型（Hunyuan3D-2mini）的推理延迟与显存瓶颈，设计并实现了一套高性能CUDA优化方案。</p>
+                            <ul class="detail-list">
+                                <li>集成 <strong>Turbodiffusion</strong> 加速框架，应用低比特注意力（SageAttention, INT8/INT4）、稀疏注意力（SLA）及步数蒸馏（rCM）技术。</li>
+                                <li>开发定制化 <strong>PyTorch C++/CUDA扩展</strong>，手写融合内核（如AdaLayerNorm），利用共享内存交换数据，避免全局内存访问。</li>
+                                <li>集成 <strong>DeepGEMM</strong> 库优化 W8A8 量化线性层。</li>
+                                <li>基于 <strong>FastAPI</strong> 构建微服务，利用 CUDA Stream 与异步批处理提升吞吐量。</li>
+                                <li><strong>成果：</strong> 在 RTX 4090 上，将 3D 生成延迟优化至 <strong>10-30秒</strong>，吞吐量达 <strong>1-2 req/s</strong>，峰值显存降低 <strong>30-50%</strong>。</li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+
+                <!-- Bachelor's Projects -->
+                <h3 style="font-size: 18px; color: #444; border-left: 4px solid #4a90e2; padding-left: 10px; margin: 30px 0 15px 0;">
+                    <span class="lang-en">Bachelor's Projects</span>
+                    <span class="lang-zh">本科期间项目</span>
+                </h3>
+                <ul class="section-list">
+                    <!-- Bachelor's Project 1 -->
+                    <li>
+                        <div class="lang-en">
+                            <span class="degree-title">Chat Data Statistical Analysis System based on Hadoop and Hive</span>
+                            <p style="margin: 5px 0 5px 0; font-size: 14px; color: #444;">Utilized big data technology to statistically analyze chat data, building accurate user portraits to improve service quality.</p>
+                            <ul class="detail-list">
+                                <li>Performed ETL cleaning on <strong>300,000 chat records</strong>, using WHERE clauses to filter invalid data.</li>
+                                <li>Used DATE and HOUR functions to construct time fields and built <strong>partition tables</strong> to optimize query performance.</li>
+                                <li>Parsed GPS latitude and longitude data and integrated with <strong>FineBI</strong> for visualization (Ring Charts, Top 10 Users).</li>
+                                <li><strong>Result:</strong> Improved query speed by <strong>20%</strong> with distributed Hadoop+Hive technology.</li>
+                            </ul>
+                        </div>
+                        <div class="lang-zh">
+                            <span class="degree-title">基于Hadoop和Hive的聊天数据统计分析系统</span>
+                            <p style="margin: 5px 0 5px 0; font-size: 14px; color: #444;">利用大数据技术对聊天数据进行统计分析，构建精准用户画像，提升服务质量。</p>
+                            <ul class="detail-list">
+                                <li>对 <strong>30万条</strong> 聊天数据进行ETL清洗，使用 WHERE 过滤非法数据。</li>
+                                <li>使用 DATE 和 HOUR 函数构建时间字段，按时间建立 <strong>分区表</strong>，优化查询性能。</li>
+                                <li>解析 GPS 经纬度数据，结合 <strong>FineBI</strong> 实现地域、时间、Top10 用户消息量的可视化分析。</li>
+                                <li><strong>成果：</strong> Hadoop+Hive 分布式技术使数据查询速度提升 <strong>20%</strong>。</li>
+                            </ul>
+                        </div>
+                    </li>
+                    <!-- Bachelor's Project 2 -->
+                    <li>
+                        <div class="lang-en">
+                            <span class="degree-title">Book Recommendation System based on Collaborative Filtering</span>
+                            <p style="margin: 5px 0 5px 0; font-size: 14px; color: #444;">Designed a high-performance recommendation system to improve accuracy based on user behavior data (ratings, browsing, purchases).</p>
+                            <ul class="detail-list">
+                                <li>Adopted collaborative filtering algorithms calculating user similarity (<strong>Cosine Similarity & Pearson Correlation</strong>).</li>
+                                <li>Introduced <strong>SVD matrix factorization</strong> to map sparse matrices to latent vector spaces, increasing matrix coverage from 75% to <strong>95%</strong>.</li>
+                                <li>Designed a hybrid recommendation model using <strong>TF-IDF</strong> to extract text features, solving the <strong>cold start problem</strong>.</li>
+                                <li><strong>Result:</strong> Improved NDCG@10 from 0.68 to <strong>0.87</strong>; Increased accuracy by <strong>28%</strong>.</li>
+                            </ul>
+                        </div>
+                        <div class="lang-zh">
+                            <span class="degree-title">基于协同过滤的图书推荐系统</span>
+                            <p style="margin: 5px 0 5px 0; font-size: 14px; color: #444;">设计高性能图书推荐系统，基于用户行为数据（评分、浏览、购买）提升推荐准确度。</p>
+                            <ul class="detail-list">
+                                <li>采用协同过滤算法，计算用户相似度（<strong>余弦相似度 & Pearson相关系数</strong>）。</li>
+                                <li>引入 <strong>SVD矩阵分解</strong>，将稀疏矩阵映射到多维隐向量空间，矩阵覆盖率从 75% 提升至 <strong>95%</strong>。</li>
+                                <li>设计混合推荐模型（协同过滤 + 内容过滤），利用 <strong>TF-IDF</strong> 提取文本特征解决 <strong>冷启动问题</strong>。</li>
+                                <li><strong>成果：</strong> NDCG@10 从 0.68 提升至 <strong>0.87</strong>；推荐准确率提升 <strong>28%</strong>。</li>
+                            </ul>
+                        </div>
+                    </li>
+                    <!-- Bachelor's Project 3 -->
+                    <li>
+                        <div class="lang-en">
+                            <span class="degree-title">Student Achievement Management System based on JavaWeb</span>
+                            <p style="margin: 5px 0 5px 0; font-size: 14px; color: #444;">Developed a student achievement management system based on Java Web using the MVC design pattern.</p>
+                            <ul class="detail-list">
+                                <li><strong>Frontend:</strong> Used <strong>JSP + Ajax + LayUI</strong> to beautify the interface and optimize interaction.</li>
+                                <li><strong>Backend:</strong> Implemented with <strong>Servlet + JDBC</strong>, using MySQL for data storage.</li>
+                                <li>Implemented real-time data updates via Ajax requests and dynamic form refreshing.</li>
+                                <li><strong>Result:</strong> Supported <strong>100+ teachers</strong> and <strong>2000+ students</strong> with efficient management functions.</li>
+                            </ul>
+                        </div>
+                        <div class="lang-zh">
+                            <span class="degree-title">基于JavaWeb的学生成绩管理系统</span>
+                            <p style="margin: 5px 0 5px 0; font-size: 14px; color: #444;">采用 MVC 设计模式，基于 Java Web 开发，实现选课、成绩管理等功能。</p>
+                            <ul class="detail-list">
+                                <li><strong>前端：</strong> 使用 <strong>JSP + Ajax + LayUI</strong> 美化界面并优化交互体验。</li>
+                                <li><strong>后端：</strong> 使用 <strong>Servlet + JDBC</strong>，利用 MySQL 存储和管理数据。</li>
+                                <li>数据实时更新：通过 Ajax 接收请求，动态刷新表单。</li>
+                                <li><strong>成果：</strong> 支持 <strong>100+名教师</strong> 和 <strong>2000+名学生</strong> 使用，操作效率显著提高。</li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- 荣誉 / Honors -->
+            <div class="content-card">
+                <h2 id="honors">
+                    <i class="fas fa-award"></i> 
+                    <span class="lang-en">Honors and Skills</span>
+                    <span class="lang-zh">荣誉与技能</span>
+                </h2>
+                <ul class="section-list">
+                    <!-- Honors -->
+                    <li>
+                        <div class="lang-en">
+                            <span class="degree-title">Honors & Awards:</span>
+                            <ul class="detail-list">
+                                <li><strong>Third Prize Scholarship</strong>, University of Electronic Science and Technology of China (UESTC).</li>
+                                <li><strong>Third Prize Scholarship</strong>, Jiangxi University of Science and Technology.</li>
+                                <li><strong>Third Prize</strong>, Programming Contest, Jiangxi University of Science and Technology.</li>
+                                <li>Outstanding Student Leader / Advanced Individual.</li>
+                            </ul>
+                        </div>
+                        <div class="lang-zh">
+                            <span class="degree-title">荣誉奖项：</span>
+                            <ul class="detail-list">
+                                <li><strong>电子科技大学三等奖学金</strong>。</li>
+                                <li><strong>江西理工大学三等奖学金</strong>。</li>
+                                <li><strong>江西理工大学程序设计大赛三等奖</strong>。</li>
+                                <li>优秀班干 / 先进个人。</li>
+                            </ul>
+                        </div>
+                    </li>
+                    <!-- Skills -->
+                    <li>
+                        <div class="lang-en">
+                            <span class="degree-title">Technical Skills:</span>
+                            <ul class="detail-list">
+                                <li><strong>Languages:</strong> C, C++, Python, Java.</li>
+                                <li><strong>Technologies:</strong> CUDA, Git, Linux, Hadoop, Hive, Java Web, Data Structures.</li>
+                                <li><strong>Domains:</strong> Deep Learning, LLM, HPC, Parallel Computing, Big Data.</li>
+                                <li><strong>English:</strong> CET-6 (511) - Good reading and writing skills.</li>
+                            </ul>
+                        </div>
+                        <div class="lang-zh">
+                            <span class="degree-title">专业技能：</span>
+                            <ul class="detail-list">
+                                <li><strong>编程语言：</strong> C, C++, Python, Java。</li>
+                                <li><strong>技术栈：</strong> CUDA, Git, Linux, Hadoop, Hive, Java Web, 数据结构。</li>
+                                <li><strong>领域：</strong> 深度学习, LLM, HPC, 并行计算, 大数据。</li>
+                                <li><strong>英语能力：</strong> CET-6 (511分) - 良好的听说读写能力。</li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function setLanguage(lang) {
+            // 设置 body 类
+            document.body.className = lang;
+            
+            // 更新按钮状态
+            const btns = document.querySelectorAll('.lang-btn');
+            btns.forEach(btn => {
+                if (btn.innerText.toLowerCase().includes(lang === 'en' ? 'en' : '中')) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
