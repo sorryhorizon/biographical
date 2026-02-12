@@ -68,7 +68,6 @@
 ├── images/             # 图片资源目录
 │   ├── uestc_logo.png  # 电子科技大学校徽
 │   └── uestc_animation.mp4 # 电子科技大学动画视频
-├── 简政简历.docx       # 简历源文件 (硕士)
 ├── README.md           # 英文文档
 └── README_zh.md        # 中文文档
 ```

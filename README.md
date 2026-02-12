@@ -71,7 +71,6 @@ This project is a personal academic homepage for **Jian Zheng**, a Master's stud
 ├── images/             # Image resources
 │   ├── uestc_logo.png  # UESTC School Logo
 │   └── uestc_animation.mp4 # UESTC Animation Video
-├── 简政简历.docx       # Source resume file (Master's)
 ├── README.md           # English documentation
 └── README_zh.md        # Chinese documentation
 ```

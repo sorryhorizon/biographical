@@ -20,6 +20,8 @@ Thumbs.db
 *.swp
 *.swo
 
+*.docx
+
 # Trae/AI
 .trae/
 

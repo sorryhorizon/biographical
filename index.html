@@ -7,36 +7,101 @@
     <!-- 引入 FontAwesome 图标库 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* CSS Variables / CSS 变量 */
+        :root {
+            /* Light Mode (Default) */
+            --bg-color: #f4f6f9;
+            --text-color: #333;
+            --text-muted: #666;
+            --text-light: #777;
+            --link-color: #0066cc;
+            --link-hover-color: #004499;
+            --navbar-bg: #fff;
+            --navbar-border: #e1e4e8;
+            --nav-item-color: #555;
+            --nav-item-active-color: #0066cc;
+            --card-bg: #fff;
+            --shadow-color: rgba(0,0,0,0.05);
+            --avatar-border: #fff;
+            --h1-color: #2c3e50;
+            --border-light: #f0f0f0;
+            --icon-color: #4a90e2;
+            --h2-color: #2c3e50;
+            --h2-border: #f0f0f0;
+            --dot-color: #4a90e2;
+            --degree-color: #000;
+            --tag-bg: #f5f5f5;
+            --tag-text: #666;
+            --btn-border: #ddd;
+            --btn-hover-border: #0066cc;
+            --btn-active-bg: #0066cc;
+            --btn-active-text: #fff;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                /* Dark Mode */
+                --bg-color: #121212;
+                --text-color: #e0e0e0;
+                --text-muted: #aaa;
+                --text-light: #bbb;
+                --link-color: #66b3ff;
+                --link-hover-color: #99ccff;
+                --navbar-bg: #1e1e1e;
+                --navbar-border: #333;
+                --nav-item-color: #aaa;
+                --nav-item-active-color: #66b3ff;
+                --card-bg: #1e1e1e;
+                --shadow-color: rgba(0,0,0,0.5);
+                --avatar-border: #333;
+                --h1-color: #eee;
+                --border-light: #333;
+                --icon-color: #6ab0ff;
+                --h2-color: #eee;
+                --h2-border: #333;
+                --dot-color: #6ab0ff;
+                --degree-color: #fff;
+                --tag-bg: #333;
+                --tag-text: #ccc;
+                --btn-border: #444;
+                --btn-hover-border: #66b3ff;
+                --btn-active-bg: #005bb5;
+                --btn-active-text: #fff;
+            }
+        }
+
         /* 全局样式 / Global Styles */
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             line-height: 1.6;
-            color: #333;
+            color: var(--text-color);
             margin: 0;
             padding: 0;
-            background: #f4f6f9; /* 浅灰色背景，增加层次感 */
+            background: var(--bg-color);
+            transition: background 0.3s, color 0.3s;
         }
 
         a {
-            color: #0066cc;
+            color: var(--link-color);
             text-decoration: none;
             transition: color 0.2s;
         }
 
         a:hover {
             text-decoration: underline;
-            color: #004499;
+            color: var(--link-hover-color);
         }
 
         /* 顶部导航栏 / Top Navigation Bar */
         .navbar {
-            background-color: #fff;
+            background-color: var(--navbar-bg);
             padding: 0;
-            border-bottom: 1px solid #e1e4e8;
+            border-bottom: 1px solid var(--navbar-border);
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05); /* 增加导航栏阴影 */
+            box-shadow: 0 2px 8px var(--shadow-color);
+            transition: background 0.3s, border-color 0.3s;
         }
 
         .nav-container {
@@ -62,7 +127,7 @@
         }
 
         .nav-item {
-            color: #555;
+            color: var(--nav-item-color);
             font-size: 15px;
             font-weight: 500;
             white-space: nowrap;
@@ -75,13 +140,13 @@
         }
 
         .nav-item.active {
-            color: #0066cc;
-            border-bottom: 3px solid #0066cc;
+            color: var(--nav-item-active-color);
+            border-bottom: 3px solid var(--nav-item-active-color);
             font-weight: 600;
         }
 
         .nav-item:hover {
-            color: #0066cc;
+            color: var(--nav-item-active-color);
         }
 
         /* 主容器 / Main Container */
@@ -99,15 +164,16 @@
             width: 240px; /* 调整宽度仿 fluids.ac */
             flex-shrink: 0;
             text-align: center;
-            background: #fff;
+            background: var(--card-bg);
             padding: 20px; /* 减小内边距 */
             border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 12px var(--shadow-color);
             position: sticky;
             top: 90px;
             max-height: calc(100vh - 120px);
             overflow-y: auto;
             scrollbar-width: none;
+            transition: background 0.3s, box-shadow 0.3s;
         }
         
         .sidebar::-webkit-scrollbar {
@@ -121,9 +187,10 @@
             margin: 0 auto 15px;
             border-radius: 50%;
             overflow: hidden;
-            background: #f0f0f0;
-            border: 4px solid #fff;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            background: #f0f0f0; /* Use default or variable if needed */
+            border: 4px solid var(--avatar-border);
+            box-shadow: 0 4px 10px var(--shadow-color);
+            transition: border-color 0.3s;
         }
 
         /* ... avatar placeholder ... */
@@ -152,24 +219,27 @@
         .sidebar h1 {
             font-size: 22px;
             margin: 0 0 5px 0; /* 减小标题下间距 */
-            color: #2c3e50;
+            color: var(--h1-color);
             font-weight: 700;
+            transition: color 0.3s;
         }
 
         .sidebar .affiliation {
             font-size: 14px;
-            color: #666;
+            color: var(--text-muted);
             margin-bottom: 15px; /* 减小间距 */
             line-height: 1.5;
+            transition: color 0.3s;
         }
 
         .sidebar .interests {
             font-size: 13px;
-            color: #777;
+            color: var(--text-light);
             line-height: 1.6;
             margin-bottom: 15px; /* 减小间距 */
             padding-top: 15px;
-            border-top: 1px solid #f0f0f0;
+            border-top: 1px solid var(--border-light);
+            transition: color 0.3s, border-color 0.3s;
         }
 
         .contact-list {
@@ -177,7 +247,7 @@
             flex-direction: column;
             gap: 10px;
             font-size: 14px;
-            color: #555;
+            color: var(--nav-item-color);
             align-items: flex-start; /* 左对齐列表 */
             padding-left: 10px;
         }
@@ -190,18 +260,19 @@
         }
         
         .contact-item a {
-             color: #555;
+             color: var(--nav-item-color);
              transition: color 0.2s;
         }
         
         .contact-item a:hover {
-            color: #0066cc;
+            color: var(--link-color);
         }
 
         .contact-item i {
             width: 20px;
             text-align: center;
-            color: #4a90e2;
+            color: var(--icon-color);
+            transition: color 0.3s;
         }
 
         /* 主内容区域样式 / Main Content Styles */
@@ -212,26 +283,28 @@
         
         /* 通用卡片样式 */
         .content-card {
-            background: #fff;
+            background: var(--card-bg);
             padding: 30px;
             border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            box-shadow: 0 2px 8px var(--shadow-color);
             margin-bottom: 30px;
+            transition: background 0.3s, box-shadow 0.3s;
         }
 
         .intro p {
             margin-bottom: 15px;
             font-size: 16px;
             text-align: justify;
-            color: #444;
+            color: var(--text-color);
             line-height: 1.8;
+            transition: color 0.3s;
         }
 
         /* 章节标题样式 / Section Title Styles */
         h2 {
             font-size: 20px;
-            color: #2c3e50;
-            border-bottom: 2px solid #f0f0f0;
+            color: var(--h2-color);
+            border-bottom: 2px solid var(--h2-border);
             padding-bottom: 12px;
             margin-top: 0; /* 卡片顶部 */
             margin-bottom: 25px;
@@ -239,11 +312,13 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            transition: color 0.3s, border-color 0.3s;
         }
 
         h2 i {
-            color: #4a90e2; /* 蓝色图标 */
+            color: var(--icon-color); /* 蓝色图标 */
             font-size: 20px;
+            transition: color 0.3s;
         }
 
         /* 项目列表样式 / List Items Styles */
@@ -259,18 +334,20 @@
             padding-left: 20px;
             margin-bottom: 25px; /* 减小项目间距 */
             font-size: 15px;
-            color: #333;
+            color: var(--text-color);
+            transition: color 0.3s;
         }
 
         /* 第一层列表项的蓝色大圆点 */
         .section-list > li::before {
             content: "•";
-            color: #4a90e2;
+            color: var(--dot-color);
             font-weight: bold;
             font-size: 20px;
             position: absolute;
             left: 0;
             top: -4px;
+            transition: color 0.3s;
         }
 
         /* 内部列表 (项目细节) */
@@ -286,30 +363,34 @@
             padding-left: 15px; /* 减小内缩进 */
             margin-bottom: 6px; /* 减小行间距 */
             font-size: 14px;
-            color: #555;
+            color: var(--nav-item-color);
             line-height: 1.5; /* 稍微紧凑的行高 */
+            transition: color 0.3s;
         }
 
         /* 内部列表项的小圆点 */
         .section-list li ul li::before {
             content: "•";
-            color: #4a90e2; /* 保持蓝色主题 */
+            color: var(--dot-color); /* 保持蓝色主题 */
             font-size: 14px; /* 较小的圆点 */
             position: absolute;
             left: 0;
             top: 0;
             font-weight: normal;
+            transition: color 0.3s;
         }
 
         .date-range {
             font-style: italic;
-            color: #666;
+            color: var(--text-muted);
             margin-right: 5px;
+            transition: color 0.3s;
         }
 
         .degree-title {
             font-weight: bold;
-            color: #000;
+            color: var(--degree-color);
+            transition: color 0.3s;
         }
 
         .institution {
@@ -319,12 +400,13 @@
         /* 标签样式 / Tag Styles */
         .tag {
             display: inline-block;
-            background: #f5f5f5;
+            background: var(--tag-bg);
             padding: 2px 8px;
             border-radius: 4px;
             font-size: 12px;
-            color: #666;
+            color: var(--tag-text);
             margin-left: 5px;
+            transition: background 0.3s, color 0.3s;
         }
 
         /* 响应式设计 / Responsive Design */
@@ -366,24 +448,24 @@
 
         .lang-btn {
             background: none;
-            border: 1px solid #ddd;
+            border: 1px solid var(--btn-border);
             border-radius: 4px;
             padding: 4px 10px;
             font-size: 13px;
             cursor: pointer;
-            color: #666;
+            color: var(--text-muted);
             transition: all 0.2s;
         }
 
         .lang-btn:hover {
-            border-color: #0066cc;
-            color: #0066cc;
+            border-color: var(--btn-hover-border);
+            color: var(--btn-hover-border);
         }
 
         .lang-btn.active {
-            background-color: #0066cc;
-            color: #fff;
-            border-color: #0066cc;
+            background-color: var(--btn-active-bg);
+            color: var(--btn-active-text);
+            border-color: var(--btn-active-bg);
         }
 
         /* 语言显示控制 / Language Display Control */
@@ -564,7 +646,7 @@
                             <span class="degree-title">M.Eng. Software Engineering</span>, 
                             <span class="institution">University of Electronic Science and Technology of China (UESTC), Shenzhen Institute for Advanced Study</span>.
                             <br>
-                            Supervisors: <a href="https://yjsjy.uestc.edu.cn/gmis/jcsjgl/dsfc/dsgrjj/20495?yxsh=28" target="_blank" style="color: #4a90e2; text-decoration: none;">Prof. Jun Yang</a> (Fellow of the Canadian Academy of Engineering) and <a href="https://yjsjy.uestc.edu.cn/gmis/jcsjgl/dsfc/dsgrjj/20589?yxsh=28" target="_blank" style="color: #4a90e2; text-decoration: none;">Prof. Qiuquan Guo</a>.
+                            Supervisors: <a href="https://yjsjy.uestc.edu.cn/gmis/jcsjgl/dsfc/dsgrjj/20495?yxsh=28" target="_blank" style="color: var(--icon-color); text-decoration: none;">Prof. Jun Yang</a> (Fellow of the Canadian Academy of Engineering) and <a href="https://yjsjy.uestc.edu.cn/gmis/jcsjgl/dsfc/dsgrjj/20589?yxsh=28" target="_blank" style="color: #4a90e2; text-decoration: none;">Prof. Qiuquan Guo</a>.
                             <br>
                             Lab: <a href="http://www.shensilab.com/" target="_blank" style="color: #4a90e2; text-decoration: none;">Shensi Lab</a> (AI Group & Low-Altitude Economy Group).
                             <br>
@@ -611,7 +693,7 @@
                 </h2>
                 
                 <!-- Open Source Contributions -->
-                <h3 style="font-size: 18px; color: #444; border-left: 4px solid #4a90e2; padding-left: 10px; margin: 20px 0 15px 0;">
+                <h3 style="font-size: 18px; color: var(--text-color); border-left: 4px solid var(--icon-color); padding-left: 10px; margin: 20px 0 15px 0;">
                     <span class="lang-en">Open Source Contributions</span>
                     <span class="lang-zh">开源项目贡献</span>
                 </h3>
@@ -687,7 +769,7 @@
                 </ul>
 
                 <!-- Bachelor's Projects -->
-                <h3 style="font-size: 18px; color: #444; border-left: 4px solid #4a90e2; padding-left: 10px; margin: 30px 0 15px 0;">
+                <h3 style="font-size: 18px; color: var(--text-color); border-left: 4px solid var(--icon-color); padding-left: 10px; margin: 30px 0 15px 0;">
                     <span class="lang-en">Bachelor's Projects</span>
                     <span class="lang-zh">本科期间项目</span>
                 </h3>
