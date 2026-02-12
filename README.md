@@ -16,6 +16,7 @@ This project is a personal academic homepage for **Jian Zheng**, a Master's stud
 - **Skill Description**: Refined the Chinese skill description to be more humble and colloquial.
 - **English Intro**: Synced English introduction style to match the conversational, first-person, and humble tone of the Chinese version.
 - **Skills Update**: Added explicit "Languages" entry (Chinese/English) and renamed "Programming Languages" for clarity.
+- **Theme Toggle**: Implemented manual Dark/Light mode toggle with system preference support.
 
 ### Key Updates (2026-02-11)
 - **UI/UX Overhaul**: Implemented a modern card-based layout (`content-card`) for main content sections and optimized sidebar styling (240px width).

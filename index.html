@@ -70,6 +70,66 @@
             }
         }
 
+        /* 强制深色模式 / Forced Dark Mode */
+        body.dark-theme {
+            --bg-color: #121212;
+            --text-color: #e0e0e0;
+            --text-muted: #aaa;
+            --text-light: #bbb;
+            --link-color: #66b3ff;
+            --link-hover-color: #99ccff;
+            --navbar-bg: #1e1e1e;
+            --navbar-border: #333;
+            --nav-item-color: #aaa;
+            --nav-item-active-color: #66b3ff;
+            --card-bg: #1e1e1e;
+            --shadow-color: rgba(0,0,0,0.5);
+            --avatar-border: #333;
+            --h1-color: #eee;
+            --border-light: #333;
+            --icon-color: #6ab0ff;
+            --h2-color: #eee;
+            --h2-border: #333;
+            --dot-color: #6ab0ff;
+            --degree-color: #fff;
+            --tag-bg: #333;
+            --tag-text: #ccc;
+            --btn-border: #444;
+            --btn-hover-border: #66b3ff;
+            --btn-active-bg: #005bb5;
+            --btn-active-text: #fff;
+        }
+
+        /* 强制浅色模式 / Forced Light Mode */
+        body.light-theme {
+            --bg-color: #f4f6f9;
+            --text-color: #333;
+            --text-muted: #666;
+            --text-light: #777;
+            --link-color: #0066cc;
+            --link-hover-color: #004499;
+            --navbar-bg: #fff;
+            --navbar-border: #e1e4e8;
+            --nav-item-color: #555;
+            --nav-item-active-color: #0066cc;
+            --card-bg: #fff;
+            --shadow-color: rgba(0,0,0,0.05);
+            --avatar-border: #fff;
+            --h1-color: #2c3e50;
+            --border-light: #f0f0f0;
+            --icon-color: #4a90e2;
+            --h2-color: #2c3e50;
+            --h2-border: #f0f0f0;
+            --dot-color: #4a90e2;
+            --degree-color: #000;
+            --tag-bg: #f5f5f5;
+            --tag-text: #666;
+            --btn-border: #ddd;
+            --btn-hover-border: #0066cc;
+            --btn-active-bg: #0066cc;
+            --btn-active-text: #fff;
+        }
+
         /* 全局样式 / Global Styles */
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -523,6 +583,9 @@
             
             <!-- 语言切换器 -->
             <div class="lang-switch">
+                <button class="lang-btn" onclick="toggleTheme()" title="Toggle Theme" style="margin-right: 5px;">
+                    <i class="fas fa-adjust"></i>
+                </button>
                 <button class="lang-btn active" onclick="setLanguage('en')">En</button>
                 <button class="lang-btn" onclick="setLanguage('zh')">中</button>
             </div>
@@ -611,7 +674,7 @@
             <!-- 简介 / Introduction -->
             <div class="intro content-card" id="about">
                 <div class="lang-en">
-                    <p>Hi, I'm Jian Zheng! 👋 I'm currently a Master's student in <strong>Software Engineering</strong> at the <strong>University of Electronic Science and Technology of China (UESTC)</strong>.</p>
+                    <p>Hi, My name is Jian Zheng! 👋 I'm currently a Master's student in <strong>Software Engineering</strong> at the <strong>University of Electronic Science and Technology of China (UESTC)</strong>.</p>
                     
                     <p>I'm passionate about combining low-level computing with AI. Right now, I'm focusing on <strong>Deep Learning</strong> and <strong>Large Language Models (LLMs)</strong>, while also diving deep into <strong>High-Performance Computing (HPC)</strong> and <strong>Parallel Computing</strong> to break performance bottlenecks through hardware-software co-design.</p>
 
@@ -903,19 +966,63 @@
     </div>
 
     <script>
+        // 初始化：检查本地存储的主题设置
+        // Initialize: Check local storage for theme settings
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                document.body.classList.add(savedTheme);
+            }
+        })();
+
         function setLanguage(lang) {
-            // 设置 body 类
-            document.body.className = lang;
+            // 设置 body 类 (使用 classList 避免覆盖主题类)
+            // Set body class (use classList to avoid overwriting theme class)
+            document.body.classList.remove('en', 'zh');
+            document.body.classList.add(lang);
             
             // 更新按钮状态
             const btns = document.querySelectorAll('.lang-btn');
             btns.forEach(btn => {
-                if (btn.innerText.toLowerCase().includes(lang === 'en' ? 'en' : '中')) {
+                const btnText = btn.innerText.toLowerCase();
+                // 跳过主题切换按钮
+                if (btn.querySelector('.fa-adjust')) return;
+                
+                if (btnText.includes(lang === 'en' ? 'en' : '中')) {
                     btn.classList.add('active');
                 } else {
                     btn.classList.remove('active');
                 }
             });
+        }
+
+        function toggleTheme() {
+            const isDark = document.body.classList.contains('dark-theme');
+            const isLight = document.body.classList.contains('light-theme');
+            const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            if (isDark) {
+                // 当前是强制深色 -> 切换到强制浅色
+                document.body.classList.remove('dark-theme');
+                document.body.classList.add('light-theme');
+                localStorage.setItem('theme', 'light-theme');
+            } else if (isLight) {
+                // 当前是强制浅色 -> 切换到强制深色
+                document.body.classList.remove('light-theme');
+                document.body.classList.add('dark-theme');
+                localStorage.setItem('theme', 'dark-theme');
+            } else {
+                // 当前是系统跟随模式
+                if (systemDark) {
+                    // 系统是深色，用户想切换 -> 浅色
+                    document.body.classList.add('light-theme');
+                    localStorage.setItem('theme', 'light-theme');
+                } else {
+                    // 系统是浅色，用户想切换 -> 深色
+                    document.body.classList.add('dark-theme');
+                    localStorage.setItem('theme', 'dark-theme');
+                }
+            }
         }
     </script>
 </body>
